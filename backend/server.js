@@ -12,6 +12,9 @@ app.get('/', (req, res) => {
     res.send('Backend is running...');
 });
 
+const connectDB = require('./config/db');
+connectDB();
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
