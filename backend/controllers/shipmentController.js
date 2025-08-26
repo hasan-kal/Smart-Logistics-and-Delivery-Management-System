@@ -55,3 +55,41 @@ exports.cancelShipment = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Update shipment status (Agent)
+exports.updateStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const shipment = await Shipment.findById(req.params.id);
+
+    if (!shipment) return res.status(404).json({ msg: "Shipment not found" });
+    if (shipment.agent.toString() !== req.user.id)
+      return res.status(403).json({ msg: "Not your shipment" });
+
+    shipment.status = status;
+    await shipment.save();
+
+    res.json(shipment);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Update location (Agent)
+exports.updateLocation = async (req, res) => {
+  try {
+    const { lng, lat } = req.body;
+    const shipment = await Shipment.findById(req.params.id);
+
+    if (!shipment) return res.status(404).json({ msg: "Shipment not found" });
+    if (shipment.agent.toString() !== req.user.id)
+      return res.status(403).json({ msg: "Not your shipment" });
+
+    shipment.location = { type: "Point", coordinates: [lng, lat] };
+    await shipment.save();
+
+    res.json({ msg: "Location updated", location: shipment.location });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
