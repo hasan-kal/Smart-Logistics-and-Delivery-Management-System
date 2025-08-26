@@ -3,6 +3,8 @@ import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import CustomerDashboard from "./pages/CustomerDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -17,11 +19,11 @@ function App() {
             <Route path="*" element={<Navigate to="/login" />} />
           </>
         ) : user.role === "admin" ? (
-          <Route path="/*" element={<h1 className="p-6">Admin Dashboard</h1>} />
+          <Route path="/*" element={<AdminDashboard />} />
         ) : user.role === "agent" ? (
           <Route path="/*" element={<h1 className="p-6">Agent Dashboard</h1>} />
         ) : (
-          <Route path="/*" element={<h1 className="p-6">Customer Dashboard</h1>} />
+          <Route path="/*" element={<CustomerDashboard />} />
         )}
       </Routes>
     </Router>
