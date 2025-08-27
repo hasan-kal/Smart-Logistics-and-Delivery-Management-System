@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
+import { io } from "socket.io-client";
 
 export default function CustomerDashboard() {
   const { token } = useContext(AuthContext);
@@ -20,6 +21,30 @@ export default function CustomerDashboard() {
 
   useEffect(() => {
     fetchShipments();
+  }, []);
+
+  useEffect(() => {
+    const socket = io("http://localhost:5000");
+
+    socket.on("agentLocationUpdated", (data) => {
+      setShipments((prev) =>
+        prev.map((s) =>
+          s._id === data.id
+            ? { ...s, location: { coordinates: [data.lng, data.lat] } }
+            : s
+        )
+      );
+    });
+
+    socket.on("shipmentStatusUpdated", (data) => {
+      setShipments((prev) =>
+        prev.map((s) => (s._id === data.id ? { ...s, status: data.status } : s))
+      );
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   const handleSubmit = async (e) => {
@@ -75,7 +100,16 @@ export default function CustomerDashboard() {
       <ul>
         {shipments.map((s) => (
           <li key={s._id} className="flex justify-between items-center border p-2 mb-2 rounded">
-            <span>{s.pickupAddress} → {s.deliveryAddress} ({s.status})</span>
+            <span>
+              {s.pickupAddress} → {s.deliveryAddress} ({s.status})
+              {s.location && (
+                <div>
+                  <small>
+                    Location: {s.location.coordinates[1]}, {s.location.coordinates[0]}
+                  </small>
+                </div>
+              )}
+            </span>
             {s.status === "Booked" && (
               <button onClick={() => cancelShipment(s._id)} className="bg-red-500 text-white px-3 py-1 rounded">
                 Cancel

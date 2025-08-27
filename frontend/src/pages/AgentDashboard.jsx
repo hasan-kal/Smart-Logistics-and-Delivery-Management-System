@@ -1,18 +1,26 @@
-
-
 import { useState, useEffect, useContext } from "react";
 import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
+import { io } from "socket.io-client";
 
 export default function AgentDashboard() {
   const { token } = useContext(AuthContext);
   const [shipments, setShipments] = useState([]);
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const newSocket = io("http://localhost:5000");
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   const fetchShipments = async () => {
     const res = await api.get("/shipments", {
       headers: { "x-auth-token": token },
     });
-    // Only show shipments assigned to this agent
     const assigned = res.data.filter(s => s.agent && s.agent._id);
     setShipments(assigned);
   };
@@ -26,6 +34,7 @@ export default function AgentDashboard() {
     await api.put(`/shipments/${id}/status`, { status }, {
       headers: { "x-auth-token": token },
     });
+    if (socket) socket.emit("updateStatus", { id, status });
     fetchShipments();
   };
 
@@ -36,6 +45,7 @@ export default function AgentDashboard() {
         await api.put(`/shipments/${id}/location`, { lat: latitude, lng: longitude }, {
           headers: { "x-auth-token": token },
         });
+        if (socket) socket.emit("updateLocation", { id, lat: latitude, lng: longitude });
       });
     } else {
       alert("Geolocation not supported");
