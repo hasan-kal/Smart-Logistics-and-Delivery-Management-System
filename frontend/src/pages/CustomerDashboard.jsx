@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import { io } from "socket.io-client";
+import ShipmentMap from "../components/ShipmentMap";
 
 export default function CustomerDashboard() {
   const { token } = useContext(AuthContext);
@@ -99,19 +100,16 @@ export default function CustomerDashboard() {
 
       <ul>
         {shipments.map((s) => (
-          <li key={s._id} className="flex justify-between items-center border p-2 mb-2 rounded">
+          <li key={s._id} className="flex flex-col border p-2 mb-2 rounded">
             <span>
               {s.pickupAddress} → {s.deliveryAddress} ({s.status})
-              {s.location && (
-                <div>
-                  <small>
-                    Location: {s.location.coordinates[1]}, {s.location.coordinates[0]}
-                  </small>
-                </div>
-              )}
             </span>
+            {s.location && <ShipmentMap location={s.location} />}
             {s.status === "Booked" && (
-              <button onClick={() => cancelShipment(s._id)} className="bg-red-500 text-white px-3 py-1 rounded">
+              <button
+                onClick={() => cancelShipment(s._id)}
+                className="bg-red-500 text-white px-3 py-1 rounded mt-2"
+              >
                 Cancel
               </button>
             )}
