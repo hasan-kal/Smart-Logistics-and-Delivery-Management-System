@@ -1,7 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import { io } from "socket.io-client";
+import { NavLink } from "react-router-dom";
 
 export default function AdminDashboard() {
   const { token } = useContext(AuthContext);
@@ -21,21 +22,8 @@ export default function AdminDashboard() {
   useEffect(() => {
     const socket = io("http://localhost:5000");
 
-    socket.on("agentLocationUpdated", (data) => {
-      setShipments((prev) =>
-        prev.map((s) =>
-          s._id === data.id
-            ? { ...s, location: { coordinates: [data.lng, data.lat] } }
-            : s
-        )
-      );
-    });
-
-    socket.on("shipmentStatusUpdated", (data) => {
-      setShipments((prev) =>
-        prev.map((s) => (s._id === data.id ? { ...s, status: data.status } : s))
-      );
-    });
+    socket.on("shipmentCreated", () => fetchShipments());
+    socket.on("shipmentStatusUpdated", () => fetchShipments());
 
     return () => {
       socket.disconnect();
@@ -43,29 +31,41 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">Admin Dashboard</h2>
+    <div>
+      {/* Navigation */}
+      <div className="flex space-x-4 p-4 bg-gray-200">
+        <NavLink
+          to="/admin"
+          className={({ isActive }) =>
+            isActive
+              ? "text-white bg-blue-600 px-3 py-1 rounded font-semibold"
+              : "text-blue-600 font-semibold"
+          }
+        >
+          Live Dashboard
+        </NavLink>
+        <NavLink
+          to="/admin/analytics"
+          className={({ isActive }) =>
+            isActive
+              ? "text-white bg-blue-600 px-3 py-1 rounded font-semibold"
+              : "text-blue-600 font-semibold"
+          }
+        >
+          Analytics
+        </NavLink>
+      </div>
 
-      <ul>
-        {shipments.map((s) => (
-          <li
-            key={s._id}
-            className="flex justify-between items-center border p-2 mb-2 rounded"
-          >
-            <span>
-              <strong>Customer:</strong> {s.customer?.name || "N/A"} <br />
-              <strong>Pickup:</strong> {s.pickupAddress} →{" "}
-              <strong>Delivery:</strong> {s.deliveryAddress} <br />
-              <strong>Status:</strong> {s.status} <br />
-              {s.location && (
-                <strong>
-                  Location: {s.location.coordinates[1]}, {s.location.coordinates[0]}
-                </strong>
-              )}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <div className="p-6">
+        <h2 className="text-xl font-bold mb-4">Admin Dashboard</h2>
+        <ul>
+          {shipments.map((s) => (
+            <li key={s._id} className="border p-2 mb-2 rounded">
+              {s.pickupAddress} → {s.deliveryAddress} ({s.status})
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

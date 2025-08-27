@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -19,7 +20,11 @@ function App() {
             <Route path="*" element={<Navigate to="/login" />} />
           </>
         ) : user.role === "admin" ? (
-          <Route path="/*" element={<AdminDashboard />} />
+          <Routes>
+            <Route path="/admin/*" element={<AdminDashboard />} />
+            <Route path="/admin/analytics" element={<AnalyticsDashboard />} />
+            <Route path="*" element={<Navigate to="/admin" />} />
+          </Routes>
         ) : user.role === "agent" ? (
           <Route path="/*" element={<h1 className="p-6">Agent Dashboard</h1>} />
         ) : (
