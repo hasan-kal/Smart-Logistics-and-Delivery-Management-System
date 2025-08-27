@@ -12,6 +12,8 @@ const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
 const shipmentRoutes = require('./routes/shipmentRoutes');
 app.use('/api/shipments', shipmentRoutes);
+const analyticsRoutes = require('./routes/analyticsRoutes');
+app.use('/analytics', analyticsRoutes);
 
 app.get('/', (req, res) => {
     res.send('Backend is running...');
