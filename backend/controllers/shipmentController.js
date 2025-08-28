@@ -1,5 +1,6 @@
 const Shipment = require("../models/Shipment");
 const { sendEmail } = require("../utils/email");
+const Notification = require("../models/Notification");
 
 // Create shipment
 exports.createShipment = async (req, res) => {
@@ -61,12 +62,17 @@ exports.cancelShipment = async (req, res) => {
 exports.updateStatus = async (req, res) => {
   try {
     const { status } = req.body;
-    const shipment = await Shipment.findById(req.params.id);
+    const shipment = await Shipment.findById(req.params.id).populate("customer");
 
     if (!shipment) return res.status(404).json({ msg: "Shipment not found" });
     if (shipment.agent.toString() !== req.user.id)
       return res.status(403).json({ msg: "Not your shipment" });
 
+    // Update status
+    shipment.status = status;
+    await shipment.save();
+
+    // Send email notification to customer
     if (shipment.customer?.email) {
       await sendEmail(
         shipment.customer.email,
@@ -75,8 +81,19 @@ exports.updateStatus = async (req, res) => {
       );
     }
 
-    shipment.status = status;
-    await shipment.save();
+    // Save notification to database
+    if (shipment.customer?._id) {
+      await Notification.create({
+        user: shipment.customer._id,
+        type: "shipment",
+        message: `Your shipment ${shipment._id} status updated to ${status}`,
+      });
+    }
+
+    // Emit real-time update via Socket.IO
+    if (req.io) {
+      req.io.emit("shipmentStatusUpdated", { id: shipment._id, status });
+    }
 
     res.json(shipment);
   } catch (err) {
