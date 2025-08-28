@@ -3,6 +3,7 @@ import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import { io } from "socket.io-client";
 import ShipmentMap from "../components/ShipmentMap";
+import { toast } from "react-toastify";
 
 export default function CustomerDashboard() {
   const { token } = useContext(AuthContext);
@@ -38,6 +39,7 @@ export default function CustomerDashboard() {
     });
 
     socket.on("shipmentStatusUpdated", (data) => {
+      toast.info(`Shipment ${data.id} status updated to ${data.status}`);
       setShipments((prev) =>
         prev.map((s) => (s._id === data.id ? { ...s, status: data.status } : s))
       );

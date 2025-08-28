@@ -3,6 +3,7 @@ import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import { io } from "socket.io-client";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function AdminDashboard() {
   const { token } = useContext(AuthContext);
@@ -22,8 +23,15 @@ export default function AdminDashboard() {
   useEffect(() => {
     const socket = io("http://localhost:5000");
 
-    socket.on("shipmentCreated", () => fetchShipments());
-    socket.on("shipmentStatusUpdated", () => fetchShipments());
+    socket.on("shipmentCreated", () => {
+      toast.success("A new shipment has been created!");
+      fetchShipments();
+    });
+
+    socket.on("shipmentStatusUpdated", (data) => {
+      toast.info(`Shipment ${data.id} status updated to ${data.status}`);
+      fetchShipments();
+    });
 
     return () => {
       socket.disconnect();
