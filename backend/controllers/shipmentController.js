@@ -1,4 +1,5 @@
 const Shipment = require("../models/Shipment");
+const { sendEmail } = require("../utils/email");
 
 // Create shipment
 exports.createShipment = async (req, res) => {
@@ -65,6 +66,14 @@ exports.updateStatus = async (req, res) => {
     if (!shipment) return res.status(404).json({ msg: "Shipment not found" });
     if (shipment.agent.toString() !== req.user.id)
       return res.status(403).json({ msg: "Not your shipment" });
+
+    if (shipment.customer?.email) {
+      await sendEmail(
+        shipment.customer.email,
+        `Shipment Status Updated`,
+        `Your shipment is now: ${status}`
+      );
+    }
 
     shipment.status = status;
     await shipment.save();
