@@ -1,4 +1,5 @@
 node_modules
+#Environment Variables
 .env
 .DS_Store
 coverage
