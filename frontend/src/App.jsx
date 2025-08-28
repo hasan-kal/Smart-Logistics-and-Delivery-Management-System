@@ -6,12 +6,15 @@ import Signup from "./pages/Signup";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const { user } = useContext(AuthContext);
 
   return (
     <Router>
+      <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
         {!user ? (
           <>
@@ -20,11 +23,11 @@ function App() {
             <Route path="*" element={<Navigate to="/login" />} />
           </>
         ) : user.role === "admin" ? (
-          <Routes>
-            <Route path="/admin/*" element={<AdminDashboard />} />
+          <>
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/analytics" element={<AnalyticsDashboard />} />
             <Route path="*" element={<Navigate to="/admin" />} />
-          </Routes>
+          </>
         ) : user.role === "agent" ? (
           <Route path="/*" element={<h1 className="p-6">Agent Dashboard</h1>} />
         ) : (
