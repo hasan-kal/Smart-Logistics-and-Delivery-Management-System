@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { io } from "socket.io-client";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
+import RouteMap from "../components/RouteMap";
 
 export default function AdminDashboard() {
   const { token } = useContext(AuthContext);
@@ -69,7 +70,13 @@ export default function AdminDashboard() {
         <ul>
           {shipments.map((s) => (
             <li key={s._id} className="border p-2 mb-2 rounded">
-              {s.pickupAddress} → {s.deliveryAddress} ({s.status})
+              {s.route ? (
+                <RouteMap route={s.route} />
+              ) : (
+                <>
+                  {s.pickupAddress} → {s.deliveryAddress} ({s.status})
+                </>
+              )}
             </li>
           ))}
         </ul>

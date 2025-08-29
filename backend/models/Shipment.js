@@ -15,6 +15,11 @@ const shipmentSchema = new mongoose.Schema({
     type: { type: String, enum: ['Point'], default: 'Point' },
     coordinates: { type: [Number], default: [0, 0] }, // [lng, lat]
   },
+  route: {
+    distance: { type: Number },  // meters
+    duration: { type: Number },  // seconds
+    geometry: { type: Object },  // GeoJSON line
+  },
 }, { timestamps: true });
 
 shipmentSchema.index({ location: "2dsphere" });

@@ -1,3 +1,4 @@
+const axios = require("axios");
 const Shipment = require("../models/Shipment");
 const { sendEmail } = require("../utils/email");
 const Notification = require("../models/Notification");
@@ -5,7 +6,35 @@ const Notification = require("../models/Notification");
 // Create shipment
 exports.createShipment = async (req, res) => {
   try {
-    const { pickupAddress, deliveryAddress, packageType } = req.body;
+    const {
+      pickupCoordinates,
+      deliveryCoordinates,
+      pickupAddress,
+      deliveryAddress,
+      packageType,
+    } = req.body;
+
+    // Call OpenRouteService API for route
+    let routeData = null;
+    if (pickupCoordinates && deliveryCoordinates) {
+      const url = "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
+      const response = await axios.post(
+        url,
+        { coordinates: [pickupCoordinates, deliveryCoordinates] },
+        {
+          headers: {
+            Authorization: process.env.ORS_API_KEY,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const route = response.data;
+      routeData = {
+        distance: route.features[0].properties.segments[0].distance,
+        duration: route.features[0].properties.segments[0].duration,
+        geometry: route.features[0].geometry,
+      };
+    }
 
     const shipment = await Shipment.create({
       customer: req.user.id,
@@ -13,6 +42,7 @@ exports.createShipment = async (req, res) => {
       deliveryAddress,
       packageType,
       status: "Booked",
+      route: routeData,
     });
 
     res.json(shipment);
@@ -30,6 +60,7 @@ exports.getShipments = async (req, res) => {
     } else {
       shipments = await Shipment.find({ customer: req.user.id });
     }
+    // Route field is included by default
     res.json(shipments);
   } catch (err) {
     res.status(500).json({ error: err.message });
