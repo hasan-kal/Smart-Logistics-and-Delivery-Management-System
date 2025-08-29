@@ -1,11 +1,11 @@
-import express from "express";
-import { getOverview, getTrends } from "../controllers/analyticsController.js";
-import authMiddleware from "../middleware/authMiddleware.js";
+const express = require('express');
+const { getOverview, getTrends } = require('../controllers/analyticsController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
 // Admin-only endpoints
-router.get("/overview", authMiddleware, getOverview);
-router.get("/trends", authMiddleware, getTrends);
+router.get("/overview", authMiddleware(['admin']), getOverview);
+router.get("/trends", authMiddleware(['admin']), getTrends);
 
-export default router;
+module.exports = router;

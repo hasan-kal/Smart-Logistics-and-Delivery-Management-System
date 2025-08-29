@@ -1,6 +1,6 @@
-import Shipment from "../models/Shipment.js";
+const Shipment = require('../models/Shipment');
 
-export const getOverview = async (req, res) => {
+const getOverview = async (req, res) => {
   try {
     // Total shipments
     const totalShipments = await Shipment.countDocuments();
@@ -41,7 +41,7 @@ export const getOverview = async (req, res) => {
   }
 };
 
-export const getTrends = async (req, res) => {
+const getTrends = async (req, res) => {
   try {
     const trends = await Shipment.aggregate([
       {
@@ -61,3 +61,5 @@ export const getTrends = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
+module.exports = { getOverview, getTrends };
