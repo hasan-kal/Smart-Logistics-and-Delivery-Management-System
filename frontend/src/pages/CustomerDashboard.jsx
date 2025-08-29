@@ -3,6 +3,7 @@ import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import { io } from "socket.io-client";
 import ShipmentMap from "../components/ShipmentMap";
+import RouteMap from "../components/RouteMap";
 import { toast } from "react-toastify";
 
 export default function CustomerDashboard() {
@@ -106,7 +107,11 @@ export default function CustomerDashboard() {
             <span>
               {s.pickupAddress} → {s.deliveryAddress} ({s.status})
             </span>
-            {s.location && <ShipmentMap location={s.location} />}
+            {s.route ? (
+              <RouteMap route={s.route} />
+            ) : s.location ? (
+              <ShipmentMap location={s.location} />
+            ) : null}
             {s.status === "Booked" && (
               <button
                 onClick={() => cancelShipment(s._id)}
