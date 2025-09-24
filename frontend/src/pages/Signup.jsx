@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
+import "../styles/signup.css";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -21,19 +22,19 @@ export default function Signup() {
   };
 
   return (
-    <div>
-      <div>
+    <div className="signup-container">
+      <div className="signup-card">
         {/* Header */}
-        <div>
-          <h1>Create Account</h1>
-          <p>Join SmartLogistics today</p>
+        <div className="signup-header">
+          <h1 className="signup-title">Create Account</h1>
+          <p className="signup-subtitle">Join SmartLogistics today</p>
         </div>
 
         {/* Signup Form */}
-        <div>
+        <div className="signup-form">
           <form onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="name">
+            <div className="form-group">
+              <label htmlFor="name" className="form-label">
                 Full Name
               </label>
               <input
@@ -43,11 +44,12 @@ export default function Signup() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                className="form-input"
               />
             </div>
 
-            <div>
-              <label htmlFor="email">
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">
                 Email Address
               </label>
               <input
@@ -57,11 +59,12 @@ export default function Signup() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="form-input"
               />
             </div>
 
-            <div>
-              <label htmlFor="password">
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
                 Password
               </label>
               <input
@@ -71,32 +74,32 @@ export default function Signup() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="form-input"
               />
             </div>
 
-            <div>
-              <label htmlFor="role">
+            <div className="form-group">
+              <label htmlFor="role" className="form-label">
                 Account Type
               </label>
               <select
                 id="role"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
+                className="form-input"
               >
                 <option value="customer">Customer</option>
                 <option value="admin">Admin</option>
               </select>
             </div>
 
-            <button
-              type="submit"
-            >
+            <button type="submit" className="btn-primary">
               Create Account
             </button>
           </form>
 
           {/* Login Link */}
-          <div>
+          <div className="login-link">
             <p>
               Already have an account?{' '}
               <a href="/login">
@@ -107,8 +110,8 @@ export default function Signup() {
         </div>
 
         {/* Back to Home */}
-        <div>
-          <a href="/">
+        <div className="back-home">
+          <a href="/" className="back-home-link">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
