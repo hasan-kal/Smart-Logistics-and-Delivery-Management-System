@@ -1,0 +1,112 @@
+/* signup.css */
+
+/* Center the form */
+.signup-container {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(to bottom right, #f9fafb, #ffffff);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Card */
+.signup-card {
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 550px;
+}
+
+/* Headings */
+.signup-card h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  color: #111827;
+}
+
+.signup-card p {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #4b5563;
+}
+
+/* Inputs */
+.signup-card input, .signup-card select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.signup-card input:focus, .signup-card select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+}
+
+/* Buttons */
+.signup-card .btn-primary {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.signup-card .btn-primary:hover {
+  background: #2176bd;
+}
+
+/* Login link */
+.signup-card .login-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.signup-card .login-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.signup-card .login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Back to Home link */
+.back-home {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.back-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.back-home-link:hover {
+  color: #2176bd;
+}
+
+.back-home-link svg {
+  width: 18px;
+  height: 18px;
+}
