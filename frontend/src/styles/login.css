@@ -1,0 +1,144 @@
+/* login.css */
+
+/* Center the form */
+.login-container {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(to bottom right, #f9fafb, #ffffff);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Card */
+.login-card {
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 450px;
+}
+
+/* Headings */
+.login-card h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  color: #111827;
+}
+
+.login-card p {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #4b5563;
+}
+
+/* Inputs */
+.login-card input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.login-card input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+}
+
+/* Form options box */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9fafb;
+  border: 1px solid #ddd;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.2rem;
+}
+
+.form-options .remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.form-options .forgot-password a {
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.form-options .forgot-password a:hover {
+  color: #2176bd;
+  text-decoration: underline;
+}
+
+/* Buttons */
+.login-card .btn-primary {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-card .btn-primary:hover {
+  background: #2176bd;
+}
+
+/* Signup link */
+.login-card .signup-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.login-card .signup-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-card .signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* Back to Home link */
+.back-home {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.back-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.back-home-link:hover {
+  color: #2176bd;
+}
+
+.back-home-link svg {
+  width: 18px;
+  height: 18px;
+}
