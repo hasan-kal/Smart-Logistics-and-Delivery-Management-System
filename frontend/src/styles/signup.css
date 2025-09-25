@@ -11,6 +11,18 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Card */
 .signup-card {
   background: white;
@@ -19,6 +31,7 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   width: 100%;
   max-width: 550px;
+  animation: fadeInUp 0.6s ease both;
 }
 
 /* Headings */
@@ -50,6 +63,11 @@
 .signup-card input:focus, .signup-card select:focus {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+}
+
+.signup-card input:hover,
+.signup-card select:hover {
+  border-color: #bbb;
 }
 
 /* Buttons */
@@ -109,4 +127,16 @@
 .back-home-link svg {
   width: 18px;
   height: 18px;
+}
+
+@media (max-width: 600px) {
+  .signup-card {
+    padding: 2rem 1.5rem;
+    max-width: 90%;
+  }
+
+  .signup-card .btn-primary {
+    font-size: 0.95rem;
+    padding: 0.65rem 1rem;
+  }
 }
