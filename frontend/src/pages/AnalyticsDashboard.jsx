@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import { NavLink } from "react-router-dom";
+import "../styles/analyticsdashboard.css";
 import {
   LineChart,
   Line,
@@ -52,132 +53,97 @@ export default function AnalyticsDashboard() {
   const COLORS = ["#FFBB28", "#00C49F", "#FF4444"];
 
   return (
-    <div>
+    <div className="dashboard-container">
       {/* Navigation */}
-      <nav>
-        <div>
-          <div>
-            <div>
-              <h1>Admin Dashboard</h1>
-            </div>
-          </div>
-          <div>
-            <NavLink
-              to="/admin"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
-                  : "text-gray-600 hover:text-blue-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
-              }
-            >
-              Live Dashboard
-            </NavLink>
-            <NavLink
-              to="/admin/analytics"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
-                  : "text-gray-600 hover:text-blue-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
-              }
-            >
-              Analytics
-            </NavLink>
-          </div>
-        </div>
-      </nav>
+      <aside className="sidebar">
+        <NavLink to="/admin" className="nav-link">
+          Live Dashboard
+        </NavLink>
+        <NavLink to="/admin/analytics" className="nav-link">
+          Analytics
+        </NavLink>
+      </aside>
 
-      <div>
+      <main className="main-content">
         {/* Header */}
-        <div>
+        <div className="topbar">
           <h1>Analytics Dashboard</h1>
           <p>Comprehensive insights into your logistics operations</p>
         </div>
 
         {/* KPI Cards */}
-        <div>
-          <div>
+        <div className="stats-grid">
+          <div className="stat-card">
             <div>
-              <div>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <div>
-                <p>Total Shipments</p>
-                <p>{overview.totalShipments}</p>
-              </div>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+            <div>
+              <p>Total Shipments</p>
+              <p>{overview.totalShipments}</p>
             </div>
           </div>
 
-          <div>
+          <div className="stat-card">
             <div>
-              <div>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <div>
-                <p>Active Deliveries</p>
-                <p>{overview.activeDeliveries}</p>
-              </div>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div>
+              <p>Active Deliveries</p>
+              <p>{overview.activeDeliveries}</p>
             </div>
           </div>
 
-          <div>
+          <div className="stat-card">
             <div>
-              <div>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <div>
-                <p>Completed</p>
-                <p>{overview.completedDeliveries}</p>
-              </div>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+              <p>Completed</p>
+              <p>{overview.completedDeliveries}</p>
             </div>
           </div>
 
-          <div>
+          <div className="stat-card">
             <div>
-              <div>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </div>
-              <div>
-                <p>Cancelled</p>
-                <p>{overview.cancelledDeliveries}</p>
-              </div>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+            <div>
+              <p>Cancelled</p>
+              <p>{overview.cancelledDeliveries}</p>
             </div>
           </div>
         </div>
 
         {/* Average Delivery Time */}
-        <div>
+        <div className="stat-card">
           <div>
-            <div>
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h3>Average Delivery Time</h3>
-              <p>{overview.avgDeliveryTime}</p>
-              <p>Time from booking to delivery</p>
-            </div>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3>Average Delivery Time</h3>
+            <p>{overview.avgDeliveryTime}</p>
+            <p>Time from booking to delivery</p>
           </div>
         </div>
 
         {/* Charts Grid */}
-        <div>
+        <div className="chart-section">
           {/* Line Chart: Shipments Over Time */}
-          <div>
+          <div className="stat-card">
             <div>
-              <div>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
               <h3>Shipments Over Time</h3>
             </div>
             <ResponsiveContainer width="100%" height={300}>
@@ -217,14 +183,12 @@ export default function AnalyticsDashboard() {
           </div>
 
           {/* Pie Chart: Shipment Status Distribution */}
-          <div>
+          <div className="stat-card">
             <div>
-              <div>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                </svg>
-              </div>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+              </svg>
               <h3>Status Distribution</h3>
             </div>
             <ResponsiveContainer width="100%" height={300}>
@@ -259,7 +223,7 @@ export default function AnalyticsDashboard() {
             </ResponsiveContainer>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
