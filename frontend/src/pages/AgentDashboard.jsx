@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import { io } from "socket.io-client";
+import "../styles/agentdashboard.css";
 
 export default function AgentDashboard() {
   const { token } = useContext(AuthContext);
@@ -53,203 +54,84 @@ export default function AgentDashboard() {
   };
 
   return (
-    <div>
-      {/* Header */}
-      <div>
-        <div>
-          <div>
-            <div>
-              <h1>Agent Dashboard</h1>
-              <p>Manage your assigned deliveries</p>
-            </div>
-            <div>
-              <div>
-                Delivery Agent
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="dashboard-container">
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <h2>Agent</h2>
+        <NavLink to="/agent" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Active Deliveries</NavLink>
+        <NavLink to="/agent/completed" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Completed</NavLink>
+        <NavLink to="/agent/profile" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Profile</NavLink>
+      </aside>
 
-      <div>
-        {/* Stats Cards */}
-        <div>
-          <div>
-            <div>
-              <div>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <div>
-                <p>Assigned Shipments</p>
-                <p>{shipments.length}</p>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div>
-              <div>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 9l6-3" />
-                </svg>
-              </div>
-              <div>
-                <p>To Pick Up</p>
-                <p>
-                  {shipments.filter(s => s.status === 'Booked').length}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div>
-              <div>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <div>
-                <p>In Transit</p>
-                <p>
-                  {shipments.filter(s => s.status === 'In Transit').length}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div>
-              <div>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <div>
-                <p>Completed</p>
-                <p>
-                  {shipments.filter(s => s.status === 'Delivered').length}
-                </p>
-              </div>
-            </div>
-          </div>
+      {/* Main Content */}
+      <main className="main-content">
+        <div className="topbar">
+          <h1>Agent Dashboard</h1>
+          <p>Welcome back, manage your deliveries efficiently</p>
         </div>
 
-        {/* Shipments List */}
-        <div>
-          <div>
-            <h2>
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-              My Deliveries ({shipments.length})
-            </h2>
-          </div>
+        {/* Stats */}
+        <div className="stats-grid">
+          <div className="stat-card"><h2>Total Deliveries</h2><p>{shipments.length}</p></div>
+          <div className="stat-card"><h2>To Pick Up</h2><p>{shipments.filter(s => s.status === "Booked").length}</p></div>
+          <div className="stat-card"><h2>In Transit</h2><p>{shipments.filter(s => s.status === "In Transit").length}</p></div>
+          <div className="stat-card"><h2>Delivered</h2><p>{shipments.filter(s => s.status === "Delivered").length}</p></div>
+        </div>
 
+        {/* Deliveries Table */}
+        <div className="deliveries-table">
+          <h2>My Deliveries ({shipments.length})</h2>
           {shipments.length === 0 ? (
-            <div>
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 9l6-3" />
-              </svg>
-              <h3>No deliveries assigned</h3>
-              <p>New deliveries will appear here when assigned to you</p>
-            </div>
+            <p>No deliveries assigned</p>
           ) : (
-            <div>
-              {shipments.map((s) => (
-                <div key={s._id}>
-                  <div>
-                    <div>
-                      <div>
-                        {s.status}
-                      </div>
-                      <span>ID: {s._id.slice(-8)}</span>
-                    </div>
-
-                    <div>
-                      <div>
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <div>
-                          <p>Pickup Location</p>
-                          <p>{s.pickupAddress}</p>
-                        </div>
-                      </div>
-
-                      <div>
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <div>
-                          <p>Delivery Location</p>
-                          <p>{s.deliveryAddress}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Package Type */}
-                    <div>
-                      <span>Package Type: </span>
-                      <span>{s.packageType || 'Not specified'}</span>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div>
-                    {s.status === "Booked" && (
-                      <button
-                        onClick={() => updateStatus(s._id, "Picked")}
-                      >
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        Mark Picked
-                      </button>
-                    )}
-
-                    {s.status === "Picked" && (
-                      <button
-                        onClick={() => updateStatus(s._id, "In Transit")}
-                      >
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        Start Transit
-                      </button>
-                    )}
-
-                    {s.status === "In Transit" && (
-                      <button
-                        onClick={() => updateStatus(s._id, "Delivered")}
-                      >
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        Mark Delivered
-                      </button>
-                    )}
-
-                    <button
-                      onClick={() => updateLocation(s._id)}
-                    >
-                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      Update Location
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>ID</th>
+                  <th>Pickup</th>
+                  <th>Delivery</th>
+                  <th>Package</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {shipments.map((s) => (
+                  <tr key={s._id}>
+                    <td>{s.status}</td>
+                    <td>{s._id.slice(-8)}</td>
+                    <td>{s.pickupAddress}</td>
+                    <td>{s.deliveryAddress}</td>
+                    <td>{s.packageType || "Not specified"}</td>
+                    <td>
+                      {s.status === "Booked" && (
+                        <button onClick={() => updateStatus(s._id, "Picked")}>Mark Picked</button>
+                      )}
+                      {s.status === "Picked" && (
+                        <button onClick={() => updateStatus(s._id, "In Transit")}>Start Transit</button>
+                      )}
+                      {s.status === "In Transit" && (
+                        <button onClick={() => updateStatus(s._id, "Delivered")}>Mark Delivered</button>
+                      )}
+                      <button onClick={() => updateLocation(s._id)}>Update Location</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
-      </div>
+
+        {/* Map Section */}
+        <div className="map-section">
+          <h2>Route Map</h2>
+          {shipments.length > 0 && shipments[0].route ? (
+            <RouteMap route={shipments[0].route} />
+          ) : (
+            <p>No active routes available</p>
+          )}
+        </div>
+      </main>
     </div>
   );
 }
