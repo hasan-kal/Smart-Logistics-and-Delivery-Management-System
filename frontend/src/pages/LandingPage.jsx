@@ -10,37 +10,22 @@ export default function LandingPage() {
   return (
     <div className="landing-container">
       {/* Navigation */}
-      <nav className="navbar">
-        <div>
-          <div>
-            <div>
-              <h1 className="navbar-title">
-                SmartLogistics
-              </h1>
-            </div>
-            <div className="navbar-links">
-              {!user ? (
-                <>
-                  <Link
-                    to="/login"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="/signup"
-                  >
-                    Sign Up
-                  </Link>
-                </>
-              ) : (
-                <div>
-                  Welcome back, {user.name}!
-                </div>
-              )}
-            </div>
-          </div>
+      <header className="landing-header">
+        <div className="header-left">
+          <h1 className="logo">Smart Logistics</h1>
         </div>
-      </nav>
+
+        <div className="header-right">
+          {!user ? (
+            <>
+              <Link to="/login" className="btn-header">Login</Link>
+              <Link to="/signup" className="btn-header signup-btn">Sign Up</Link>
+            </>
+          ) : (
+            <div>Welcome back, {user.name}!</div>
+          )}
+        </div>
+      </header>
 
       {/* Hero Section */}
       <section className="hero">
