@@ -1,0 +1,124 @@
+/* customerdashboard.css */
+
+/* Layout */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: #1f2937;
+  color: white;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sidebar h2 {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.sidebar a {
+  color: #d1d5db;
+  text-decoration: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.sidebar a:hover {
+  background: #374151;
+  color: white;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  background: #f9fafb;
+  padding: 2rem;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.topbar h1 {
+  font-size: 2rem;
+  color: #111827;
+}
+
+.topbar p {
+  color: #4b5563;
+}
+
+/* Shipments Grid */
+.shipments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.shipment-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+.shipment-card:hover {
+  transform: translateY(-4px);
+}
+
+.shipment-card h2 {
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.shipment-card p {
+  color: #374151;
+  margin: 0.3rem 0;
+}
+
+.shipment-status {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+
+.shipment-status.booked {
+  background: #facc15;
+  color: #1f2937;
+}
+
+.shipment-status.in-transit {
+  background: #60a5fa;
+  color: white;
+}
+
+.shipment-status.delivered {
+  background: #34d399;
+  color: white;
+}
+
+/* Map Section */
+.map-section {
+  margin-top: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
